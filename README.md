@@ -20,6 +20,9 @@ curl -X PUT -H "Content-type: application/json" -d '{"username":"You", "header":
 
 to run:
 
-'docker compose up --build'
+```
+docker compose up --build
+```
+
 
 There are PGAdmin, Postgres, Kafka, kafdrop in containers.
