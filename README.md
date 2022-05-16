@@ -3,6 +3,7 @@
 CRUD Endpoints(examples mostly):
 
 GETs(READs) are RESTful(probably not good).
+
 POSTs(CREATE), DELETEs, PUTs(UPDATE) are done with Kafka event sourcing.
 
 curl -X GET http://localhost:8080/users/
