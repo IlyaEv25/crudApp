@@ -1,10 +1,10 @@
 {
-  "name": "record_service",
+  "name": "user_service",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node record_service.js"
+    "start": "node user_service.js"
   },
   "author": "",
   "license": "ISC",

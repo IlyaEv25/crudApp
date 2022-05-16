@@ -37,15 +37,12 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - 8000:5432
-    # volumes:
-    #   - ./services/database/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
-    #   - ./services/database/seed.sql:/docker-entrypoint-initdb.d/2-seed.sql
   pgAdmin:
     image: dpage/pgadmin4
     container_name: crud-admin
     environment:
-      PGADMIN_DEFAULT_EMAIL: evteevil6@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: Ilyxas11
+      PGADMIN_DEFAULT_EMAIL: something@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: Blabla
     ports:
       - 8085:80
   gateway:
@@ -53,15 +50,12 @@ services:
     container_name: crud-gateway
     command: sh -c "dockerize -wait tcp://zookeeper:2181 -wait tcp://kafka:9092 -wait tcp://database:5432 npm start"
     depends_on:
+      - user_service
+      - record_service
       - zookeeper
       - kafka
       - database
     environment:
-      # PGHOST: database
-      # PGPORT: 5432
-      # PGUSER: ${POSTGRES_USER}
-      # PGDATABASE: ${POSTGRES_USER}
-      # PGPASSWORD: ${POSTGRES_PASSWORD}
       GATEWAY_PORT: ${GATEWAY_PORT}
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     ports:
@@ -75,29 +69,16 @@ services:
       - kafka
       - database
     environment:
-      # PGHOST: database
-      # PGPORT: 5432
-      # PGUSER: ${POSTGRES_USER}
-      # PGDATABASE: ${POSTGRES_USER}
-      # PGPASSWORD: ${POSTGRES_PASSWORD}
-      # GATEWAY_PORT: ${GATEWAY_PORT}
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    # ports:
-    #   - ${GATEWAY_PORT}:${GATEWAY_PORT}
-    # volumes:
-    #   - ./services/gateway/src:/src
-  # consumer:
-  #   build: ./services/consumer
-  #   container_name: kafka-nodejs-example-consumer
-  #   command: sh -c "dockerize -wait tcp://zookeeper:2181 -wait tcp://kafka:9092 -wait tcp://database:5432 npm start"
-  #   depends_on:
-  #     - zookeeper
-  #     - kafka
-  #     - database
-  #   environment:
-  #     PGHOST: database
-  #     PGPORT: 5432
-  #     PGUSER: ${POSTGRES_USER}
-  #     PGDATABASE: ${POSTGRES_USER}
-  #     PGPASSWORD: ${POSTGRES_PASSWORD}
-  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  user_service:
+    build: ./services/user_service
+    container_name: crud-user-service
+    command: sh -c "dockerize -wait tcp://zookeeper:2181 -wait tcp://kafka:9092 -wait tcp://database:5432 npm start"
+    depends_on:
+      - zookeeper
+      - kafka
+      - database
+    environment:
+
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+

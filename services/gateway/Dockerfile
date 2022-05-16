@@ -1,4 +1,4 @@
-FROM node:10.9-alpine
+FROM node:16-alpine
 
 # Create a directory (to house our source files) and navigate to it.
 WORKDIR /src
@@ -19,7 +19,7 @@ COPY ./package.json ./package-lock.json /src/
 # Install build dependencies (required for node-gyp), install packages then delete build dependencies.
 # This is all done in the same command / layer so when it caches, it won't bloat the image size.
 RUN apk add --no-cache --virtual .gyp \
-        python \
+        python3 \
         make \
         g++ \
     && npm install \
